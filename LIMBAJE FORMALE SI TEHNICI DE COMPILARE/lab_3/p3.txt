@@ -1,0 +1,14 @@
+entier liste[];
+entier n;
+lis(n);
+entier i;
+pour(i = 0; i < n; i = i + 1)
+{
+lis(liste[i]);
+}
+entier s = 0;
+porchaque(element en liste)
+{
+s = s + element;
+}
+ecris(s);

@@ -1,0 +1,19 @@
+entier premiere;
+entier deuxieme;
+entier troisieme;
+
+lis(premiere);
+lis(deuxieme);
+lis(troisieme);
+
+entier minimum = premiere;
+si (deuxieme < minimum)
+{
+minimum = deuxieme;
+}
+si (troisieme < minimum)
+{
+minimum = troisieme;
+}
+
+ecris(minimum);
