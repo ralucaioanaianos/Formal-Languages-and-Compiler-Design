@@ -1,0 +1,28 @@
+booleen verification(entier n)
+{
+    si(n <= 1)
+    {
+        envoi(faux);
+    }
+    si(n == 2)
+    {
+        envoi(vrai);
+    }
+    si(n % 2 == 0)
+        envoi(faux)
+    entier d;
+    pour(d = 3; d <= racine_carre(n); d = d + 2)
+    {
+        si(n % d == 0)
+            envoi(faux);
+    }
+    envoi(vrai);
+}
+
+entier n;
+lis(n);
+booleen reponse = verification(n);
+si(response == vrai)
+ecris("yes");
+sinon
+ecris('no');

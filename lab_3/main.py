@@ -28,10 +28,14 @@ if __name__ == '__main__':
     print("found on position: ", constantsTable.find_data("ddd"), "\n")
     print("found on position: ", constantsTable.find_data("aaa"), "\n")"""
 
-    #scanner1 = Scanner("p1.txt")
-    #scanner1.readFile()
+    scanner1 = Scanner("p1.txt")
+    print(scanner1.readFile())
     scanner1err = Scanner("p1err.txt")
     print(scanner1err.readFile())
+    scanner2 = Scanner("p2.txt")
+    print(scanner2.readFile())
+    scanner3 = Scanner("p3.txt")
+    print(scanner3.readFile())
 
 
 

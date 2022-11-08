@@ -20,19 +20,19 @@ class Scanner:
 
     def readFile(self):
         errors = []
-        linenr = 0
+        lineNumber = 0
         with open(self.fileToCheck, 'r') as f:
             while True:
                 line = f.readline()
                 if not line:
                     break
                 answer = self.tokenizeLine(line)
-                if answer != "True":
-                    errors.append([linenr, answer])
-                linenr += 1
-        return errors
+                if answer is not None:
+                    errors.append([lineNumber, answer])
+                lineNumber += 1
         f.close()
-
+        self.writeToPifFile()
+        self.writeToSTFile()
         return errors
 
     def readTokenFile(self):
@@ -54,6 +54,11 @@ class Scanner:
                 reservedWord = f.readline().strip()
                 self.reservedWords.append(reservedWord)
 
+    def writeToSTFile(self):
+        with open("ST.out", "w") as f:
+            f.write(self.symTable.__str__())
+        f.close()
+
     def writeToPifFile(self):
         """
         writes what is needed in “pif.out”
@@ -62,12 +67,12 @@ class Scanner:
         with open("pif.out", "w") as f:
             stringToWrite = ""
             for i in range(len(self.pif)):
-                stringToWrite += self.pif[i][0]
+                stringToWrite += self.pif[i][0].__str__()
                 stringToWrite += " -> "
                 stringToWrite += "("
-                stringToWrite += self.pif[i][1][0]
+                stringToWrite += self.pif[i][1][0].__str__()
                 stringToWrite += ", "
-                stringToWrite += self.pif[i][1][0]
+                stringToWrite += self.pif[i][1][0].__str__()
                 stringToWrite += ")\n"
                 f.write(stringToWrite)
             f.close()
@@ -86,14 +91,21 @@ class Scanner:
         :param token: the token to verify
         :return: True if token is an identifier, False otherwise
         """
-        return re.match(r'([a-zA-Z]|[_])([a-zA-Z]|[0-9]|[_])*$', token) is not None
+        if re.match(r'([a-zA-Z]|[_])([a-zA-Z]|[0-9]|[_])*$', token) is not None:
+            index = self.symTable.addIdentifierToTable(token)
+            self.pif.append(["id", (index, token)])
+            return True
+        return False
 
     def isStringConstant(self, token):
-
-        return re.match(r'["]([a-zA-Z]|[0-9]|[_])["]*', token)
+        if re.match(r'^["]([a-zA-Z]|[0-9]|[_])*["]$', token):
+            self.pif.append(["stringConstant", [-3, -3]])
+            self.symTable.addConstantToTable(token)
+            return True
+        return False
 
     def isConstant(self, token):
-        if re.match(r'^(0|[+-]?[1-9][0-9]*)$|^\'.\'$|^\'.*\'$', token) is not None:
+        if re.match(r'(0|[+-]?[1-9][0-9]*)$|^\'.\'$|^\'.*\'$', token) is not None:
             self.pif.append(["constant", [-2, -2]])
             self.symTable.addConstantToTable(token)
             return True
@@ -163,14 +175,3 @@ class Scanner:
                     return token
             index += 1
         return None
-
-
-
-
-
-
-
-
-
-
-

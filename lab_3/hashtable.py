@@ -30,8 +30,8 @@ class HashTable:
 
     def insert_data(self, key):
         self._size += 1
-        if self._size >= self._capacity:
-            self._capacity += 10
+        if self._size >= self._capacity-1:
+            self._capacity += self._capacity
         index = self.hash_function(key)
         node = self._hashTable[index]
         if node is None:

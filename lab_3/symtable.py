@@ -3,8 +3,8 @@ from hashtable import HashTable
 
 class SymTable:
 
-    identifiers = HashTable(10)
-    constants = HashTable(10)
+    identifiers = HashTable(100)
+    constants = HashTable(100)
 
     def getIdentifiers(self):
         """
@@ -50,7 +50,4 @@ class SymTable:
         """
         :return: the string representation of SymTable
         """
-        return "SymTable{", \
-               "identifiers = ", self.identifiers.__str__(), \
-               "constants = ", self.constants.__str__(), \
-               "}"
+        return "SymTable{" + "identifiers = " + self.identifiers.__str__() + "constants = " + self.constants.__str__() + "}"

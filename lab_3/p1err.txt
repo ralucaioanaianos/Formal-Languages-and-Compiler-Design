@@ -16,4 +16,4 @@ si (troisieme << minimum)
 minimum = troisieme;
 }
 
-ecrire(minimum);
+ecris(minimum);
