@@ -36,10 +36,6 @@ class Scanner:
         return errors
 
     def readTokenFile(self):
-        """
-        parses “token.in”, extracts all the tokens and separates them into operators, separators and reserved words.
-        :return:
-        """
         with open('token.in', 'r') as f:
             f.readline()
             for i in range(17):
@@ -60,10 +56,6 @@ class Scanner:
         f.close()
 
     def writeToPifFile(self):
-        """
-        writes what is needed in “pif.out”
-        :return:
-        """
         with open("pif.out", "w") as f:
             stringToWrite = ""
             for i in range(len(self.pif)):
@@ -78,19 +70,11 @@ class Scanner:
             f.close()
 
     def isReservedWord(self, token):
-        """
-        :param token: the token to verify
-        :return: True if token is a reserved word, False otherwise
-        """
         if token in self.reservedWords:
             return True
         return False
 
     def isIdentifier(self, token):
-        """
-        :param token: the token to verify
-        :return: True if token is an identifier, False otherwise
-        """
         if re.match(r'([a-zA-Z]|[_])([a-zA-Z]|[0-9]|[_])*$', token) is not None:
             index = self.symTable.addIdentifierToTable(token)
             self.pif.append(["id", (index, token)])
@@ -127,11 +111,6 @@ class Scanner:
             return True
 
     def tokenizeLine(self, line: str):
-        """
-        takes every line, extracts every token from it, analyzes it and verifies whether there are syntax errors or not
-        :param line: the line to tokenize
-        :return: the syntax error if it exists on the line, None otherwise
-        """
         token = ''
         index = 0
         while index < len(line):
