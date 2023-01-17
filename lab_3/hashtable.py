@@ -13,12 +13,13 @@ class HashTable:
     def __str__(self):
         to_print = ""
         for index in range(self._capacity):
-            to_print += "index = " + str(index) + ": "
-            node = self._hashTable[index]
-            while node is not None:
-                to_print += str(node.key) + ' '
-                node = node.next
-            to_print += "\n"
+            if self._hashTable[index] is not None:
+                to_print += "index = " + str(index) + ": "
+                node = self._hashTable[index]
+                while node is not None:
+                    to_print += str(node.key) + ' '
+                    node = node.next
+                to_print += "\n"
         to_print += "\n"
         return to_print + "\n"
 

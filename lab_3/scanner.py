@@ -59,39 +59,46 @@ class Scanner:
         with open("pif.out", "w") as f:
             stringToWrite = ""
             for i in range(len(self.pif)):
-                stringToWrite += self.pif[i][0].__str__()
-                stringToWrite += " -> "
-                stringToWrite += "("
-                stringToWrite += self.pif[i][1][0].__str__()
-                stringToWrite += ", "
-                stringToWrite += self.pif[i][1][0].__str__()
-                stringToWrite += ")\n"
-                f.write(stringToWrite)
+                if self.pif[i] is not None:
+                    stringToWrite += self.pif[i][0].__str__()
+                    stringToWrite += " -> "
+                    stringToWrite += "("
+                    stringToWrite += self.pif[i][1][0].__str__()
+                    stringToWrite += ", "
+                    stringToWrite += self.pif[i][1][1].__str__()
+                    stringToWrite += ")\n"
+            f.write(stringToWrite)
             f.close()
 
-    def isReservedWord(self, token):
+    def isReservedWord(self, token: str):
         if token in self.reservedWords:
+            if ["token", (-1, token)] not in self.pif:
+                self.pif.append(["token", (-1, token)])
             return True
         return False
 
     def isIdentifier(self, token):
         if re.match(r'([a-zA-Z]|[_])([a-zA-Z]|[0-9]|[_])*$', token) is not None:
             index = self.symTable.addIdentifierToTable(token)
-            self.pif.append(["id", (index, token)])
+            if ["id", (index, token)] not in self.pif:
+                self.pif.append(["id", (index, token)])
             return True
         return False
 
     def isStringConstant(self, token):
-        if re.match(r'^["]([a-zA-Z]|[0-9]|[_])*["]$', token):
-            self.pif.append(["stringConstant", [-3, -3]])
+        if re.match(r'^["]([a-zA-Z]|[0-9]|[_])["]$', token):
+            if ["stringConstant", [-3, -3]] not in self.pif:
+                self.pif.append(["stringConstant", [-3, -3]])
             self.symTable.addConstantToTable(token)
             return True
         return False
 
     def isConstant(self, token):
         if re.match(r'(0|[+-]?[1-9][0-9]*)$|^\'.\'$|^\'.*\'$', token) is not None:
-            self.pif.append(["constant", [-2, -2]])
+            if ["constant", [-2, -2]] not in self.pif:
+                self.pif.append(["constant", [-2, -2]])
             self.symTable.addConstantToTable(token)
+
             return True
         return False
 
