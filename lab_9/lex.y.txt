@@ -1,0 +1,97 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+#define YYDEBUG 1
+%}
+
+%token START
+%token READ
+%token WRITE
+%token IF
+%token ELSE
+%token FOR
+%token IN
+%token WHILE
+%token BREAK
+%token INT
+%token STRING
+%token CHAR
+%token ARRAY
+%token RETURN
+%token LIST
+
+%token IDENTIFIER
+%token CONSTANT
+
+%left '+' '-' '*' '/' '%' '<'
+
+%token ADD
+%token SUB
+%token MUL
+%token DIV
+%token MODULO
+%token LESS_THAN
+%token LESS_OR_EQUAL_THAN
+%token MORE_THAN
+%token MORE_OR_EQUAL_THAN
+%token EQUALS
+%token NOT_EQUALS
+%token AND
+%token OR
+%token NOT
+%token ASSIGN
+
+%token OPEN_ROUND_BRACKET
+%token CLOSED_ROUND_BRACKET
+%token OPEN_CURLY_BRACKET
+%token CLOSED_CURLY_BRACKET
+%token COMMA
+%token SEMI_COLON
+%token OPEN_RIGHT_BRACKET
+%token CLOSED_RIGHT_BRACKET
+%token EPSILON
+
+%start program
+
+%%
+program : START compound_statement
+        compound_statement : OPEN_CURLY_BRACKET statement_list CLOSED_CURLY_BRACKET
+statement_list : statement | statement statement_list | EPSILON
+               statement : simple_statement | struct_statement
+simple_statement : assign_statement | io_statement | declaration
+                 struct_statement : compound_statement | if_statement | while_statement
+assign_statement : IDENTIFIER ASSIGN expression SEMI_COLON | indexed_identifier ASSIGN expression SEMI_COLON
+                 io_statement : read_statement | write_statement
+read_statement : READ OPEN_ROUND_BRACKET IDENTIFIER CLOSED_ROUND_BRACKET SEMI_COLON | READ OPEN_ROUND_BRACKET indexed_identifier CLOSED_ROUND_BRACKET SEMI_COLON
+               write_statement : WRITE OPEN_ROUND_BRACKET id CLOSED_ROUND_BRACKET SEMI_COLON
+if_statement : IF OPEN_ROUND_BRACKET condition_statement CLOSED_ROUND_BRACKET compound_statement | IF OPEN_ROUND_BRACKET condition_statement CLOSED_ROUND_BRACKET compound_statement ELSE compound_statement
+while_statement : WHILE OPEN_ROUND_BRACKET condition_statement CLOSED_ROUND_BRACKET compound_statement
+                condition_statement : condition | condition LOGICAL condition
+expression : CONSTANT | number_expression
+           number_expression : CONSTANT | CONSTANT OPERATOR number_expression | IDENTIFIER | IDENTIFIER OPERATOR number_expression
+OPERATOR : ADD | MUL | MODULO | SUB | DIV
+         id : IDENTIFIER | CONSTANT | indexed_identifier
+declaration : type IDENTIFIER SEMI_COLON
+            type : simple_type | array_declaration
+simple_type : INT | STRING | CHAR
+            array_declaration : LIST LESS_THAN simple_type MORE_THAN
+condition : expression RELATION expression
+          indexed_identifier : IDENTIFIER OPEN_RIGHT_BRACKET INT CLOSED_RIGHT_BRACKET
+RELATION : LESS_THAN | LESS_OR_EQUAL_THAN | EQUALS | NOT_EQUALS | MORE_OR_EQUAL_THAN | MORE_THAN
+         LOGICAL : AND | OR
+
+%%
+yyerror(char *s)
+{
+  printf("%s\n", s);
+}
+
+extern FILE *yyin;
+
+main(int argc, char **argv)
+{
+  if(argc>1) yyin = fopen(argv[1], "r");
+  if((argc>2)&&(!strcmp(argv[2],"-d"))) yydebug = 1;
+  if(!yyparse()) fprintf(stderr,"\tO.K.\n");
+}

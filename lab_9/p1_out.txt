@@ -1,0 +1,77 @@
+Reserved word: START
+Separator: {
+Reserved word: int
+Identifier: a
+Separator: ;
+Reserved word: int
+Identifier: b
+Separator: ;
+Reserved word: int
+Identifier: c
+Separator: ;
+Reserved word: int
+Identifier: max
+Separator: ;
+Reserved word: read
+Separator: (
+Identifier: a
+Separator: )
+Separator: ;
+Reserved word: read
+Separator: (
+Identifier: b
+Separator: )
+Separator: ;
+Reserved word: read
+Separator: (
+Identifier: c
+Separator: )
+Separator: ;
+Reserved word: if
+Separator: (
+Identifier: a
+Operator: >
+Identifier: b
+Operator: &&
+Identifier: a
+Operator: >
+Identifier: c
+Separator: )
+Separator: {
+Identifier: max
+Operator: =
+Identifier: a
+Separator: ;
+Separator: }
+Reserved word: else
+Separator: {
+Reserved word: if
+Separator: (
+Identifier: b
+Operator: >
+Identifier: c
+Operator: &&
+Identifier: b
+Operator: >
+Identifier: a
+Separator: )
+Separator: {
+Identifier: max
+Operator: =
+Identifier: b
+Separator: ;
+Separator: }
+Reserved word: else
+Separator: {
+Identifier: max
+Operator: =
+Identifier: c
+Separator: ;
+Separator: }
+Separator: }
+Reserved word: write
+Separator: (
+Identifier: max
+Separator: )
+Separator: ;
+Separator: }
